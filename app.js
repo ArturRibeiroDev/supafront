@@ -44,7 +44,6 @@ async function fetchProducts() {
 
 // Event listener for Add Product form submit button
 addProductForm.addEventListener('submit', async event => {
-  event.preventDefault();
   const name = addProductForm.elements['name'].value;
   const price = addProductForm.elements['price'].value;
   await addProduct(name, price);
@@ -68,6 +67,17 @@ async function addProduct(name, price) {
 async function deleteProduct(id) {
   const response = await fetch('http://13.59.174.252:3000/products/' + id, {
     method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    //body: JSON.stringify({id})
+  });
+  return response.json();
+}
+
+async function getProductById(id) {
+  const response = await fetch('http://13.59.174.252:3000/products/' + id, {
+    method: 'GET',
     headers: {
       'Content-Type': 'application/json'
     },
