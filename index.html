@@ -1,31 +1,49 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 <head>
-  <title>Product CRUD</title>
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Cadastro e consulta de produtos">
+  <title>Supabase · Produtos</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="config.js" defer></script>
+  <script src="app.js" defer></script>
 </head>
 <body>
-  <h1>Product CRUD</h1>
-
-  <form id="add-product-form">
-    <h2>Add Product</h2>
-    <label for="name">Name:</label>
-    <input type="text" id="name" name="name" required>
-    <label for="price">Price:</label>
-    <input type="number" id="price" name="price" required step="0.01">
-    <button type="submit">Add</button>
-    <h2>Update Product</h2>
-    <label for="id">ID:</label>
-    <input type="number" id="id" name="id">
-    <button type="button">Update</button>
-  </form>
-
-  <ul id="products"></ul>
-
-  <script src="app.js"></script>
-  <script>
-    // Call fetchProducts() when the page loads
-    window.addEventListener('load', fetchProducts);
-  </script>
+  <header class="topbar"><div class="brand"><span class="brand-icon" aria-hidden="true">S</span> Supabase <span class="brand-detail">/ Produtos</span></div><span class="tag">Gestão de catálogo</span></header>
+  <main>
+    <div class="page-heading"><div><p class="eyebrow">SEU CATÁLOGO, ORGANIZADO</p><h1>Produtos</h1><p>Cadastre, consulte e mantenha seus produtos atualizados.</p></div></div>
+    <nav aria-label="Navegação de produtos"><button type="button" class="nav-button active" data-view="catalog" aria-pressed="true">Catálogo</button><button type="button" class="nav-button" data-view="search" aria-pressed="false">Consultar por ID</button></nav>
+    <p id="feedback" role="status" aria-live="polite" hidden></p>
+    <section id="catalog-view" aria-label="Catálogo de produtos">
+      <div class="catalog-layout">
+        <section class="panel form-panel"><p class="eyebrow">CADASTRO</p><h2>Novo produto</h2><p class="muted">Preencha os dados para adicionar ao catálogo.</p>
+          <form id="add-product-form">
+            <label for="name">Nome do produto</label><input id="name" name="name" placeholder="Ex.: Teclado sem fio" required maxlength="200">
+            <label for="description">Descrição</label><textarea id="description" name="description" rows="4" placeholder="Detalhes e características do produto" required></textarea>
+            <label for="price">Preço (R$)</label><input type="number" id="price" name="price" placeholder="0,00" min="0" step="0.01" required>
+            <button type="submit" class="primary full">Cadastrar produto</button>
+          </form>
+        </section>
+        <section class="panel"><div class="section-heading"><div><h2>Seu catálogo</h2><p id="product-count" class="muted">Carregando produtos…</p></div><button type="button" id="refresh-products" class="secondary">Atualizar lista</button></div><ul id="products" class="product-list" aria-label="Produtos cadastrados"></ul></section>
+      </div>
+    </section>
+    <section id="search-view" class="panel search-panel" aria-labelledby="search-heading" hidden>
+      <p class="eyebrow">CONSULTA</p><h2 id="search-heading">Encontre um produto</h2><p class="muted">Informe o ID do cadastro para consultar seus detalhes.</p>
+      <form id="search-product-form"><label for="search-id">ID do produto</label><div class="search-row"><input id="search-id" name="id" placeholder="Digite o ID" required><button type="submit" class="primary">Consultar</button></div></form>
+      <ul id="search-results" class="product-list" aria-live="polite"></ul>
+    </section>
+    <section id="edit-panel" class="panel edit-panel" aria-labelledby="edit-heading" hidden>
+      <p class="eyebrow">EDIÇÃO</p><h2 id="edit-heading">Atualizar produto</h2>
+      <form id="update-product-form">
+        <label for="update-id">ID do produto</label><input id="update-id" name="id" readonly>
+        <label for="update-name">Nome do produto</label><input id="update-name" name="name" required maxlength="200">
+        <label for="update-description">Descrição</label><textarea id="update-description" name="description" rows="4" required></textarea>
+        <label for="update-price">Preço (R$)</label><input type="number" id="update-price" name="price" min="0" step="0.01" required>
+        <div class="actions"><button type="submit" class="primary">Salvar alterações</button><button type="button" id="cancel-update" class="secondary">Cancelar</button></div>
+      </form>
+    </section>
+    <footer>Catálogo de produtos · Projeto de Computação em Nuvem</footer>
+  </main>
 </body>
 </html>
